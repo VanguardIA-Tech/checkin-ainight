@@ -47,12 +47,6 @@ export default function CheckinPage() {
         .from("checkins")
         .select("*", { count: "exact", head: true });
 
-      const MAX_VAGAS = parseInt(process.env.NEXT_PUBLIC_MAX_VAGAS ?? "200");
-      if (count !== null && count >= MAX_VAGAS) {
-        setStep("full");
-        return;
-      }
-
       const { error: insertError } = await supabase.from("checkins").insert({
         nome: nome.trim(),
         telefone: `+55 ${telefone}`,
