@@ -1,6 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import { supabase, Checkin } from "@/lib/supabase";
@@ -20,14 +20,21 @@ export default function AdminPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCheckins();
     const channel = supabase
       .channel("checkins-realtime")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "checkins" }, (payload) => {
-        setCheckins((prev) => [payload.new as Checkin, ...prev]);
-      })
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "checkins" },
+        (payload) => {
+          setCheckins((prev) => [payload.new as Checkin, ...prev]);
+        }
+      )
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const vagas = 40;
@@ -36,53 +43,117 @@ export default function AdminPage() {
   const pct = Math.min(100, (ocupadas / vagas) * 100);
 
   return (
-    <main className="min-h-screen px-4 py-10" style={{ background: "#0d1117" }}>
+    <main className="min-h-screen px-4 py-10">
       <div className="max-w-2xl mx-auto">
-
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-[#e8470a] text-xs font-bold uppercase tracking-widest mb-1">Painel Admin</p>
-            <h1 className="text-white text-2xl font-bold">AI Night · Check-ins</h1>
-            <p className="text-gray-400 text-sm">6 de maio de 2026 · 18h · DO IT Hub</p>
+            <p
+              className="text-xs font-bold uppercase tracking-[3px] mb-1"
+              style={{ color: "var(--ai-cyan)" }}
+            >
+              Painel Admin
+            </p>
+            <h1
+              className="text-white font-extrabold"
+              style={{
+                fontSize: 26,
+                letterSpacing: 1,
+              }}
+            >
+              AI Night · Check-ins
+            </h1>
+            <p className="text-sm" style={{ color: "var(--ai-muted)" }}>
+              6 de maio de 2026 · 18h · DO IT Hub
+            </p>
           </div>
-          <button onClick={fetchCheckins}
-            className="text-xs text-gray-400 border border-gray-700 rounded-lg px-3 py-2 hover:border-[#e8470a] hover:text-white transition-all">
+          <button
+            onClick={fetchCheckins}
+            className="text-xs rounded-lg px-3 py-2 transition-all"
+            style={{
+              color: "var(--ai-muted)",
+              border: "1px solid var(--ai-line)",
+              background: "var(--ai-bg-glass)",
+            }}
+          >
             ↻ Atualizar
           </button>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-6">
           {[
-            { label: "Confirmados", value: ocupadas, color: "#e8470a" },
-            { label: "Vagas livres", value: livres, color: "#22c55e" },
-            { label: "Total vagas", value: vagas, color: "#6b7280" },
+            { label: "Confirmados", value: ocupadas, color: "var(--ai-cyan)" },
+            { label: "Vagas livres", value: livres, color: "var(--ai-gold)" },
+            { label: "Total vagas", value: vagas, color: "var(--ai-muted)" },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl p-4 text-center"
-              style={{ background: "#161b22", border: "1px solid #21262d" }}>
-              <p className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</p>
-              <p className="text-gray-400 text-xs mt-1">{s.label}</p>
+            <div
+              key={s.label}
+              className="rounded-xl p-4 text-center backdrop-blur-md"
+              style={{
+                background: "var(--ai-bg-glass)",
+                border: "1px solid var(--ai-line)",
+              }}
+            >
+              <p className="text-2xl font-extrabold" style={{ color: s.color }}>
+                {s.value}
+              </p>
+              <p
+                className="text-xs mt-1 uppercase tracking-[1.5px]"
+                style={{ color: "var(--ai-muted)" }}
+              >
+                {s.label}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Progress bar */}
-        <div className="rounded-xl p-4 mb-6" style={{ background: "#161b22", border: "1px solid #21262d" }}>
-          <div className="flex justify-between text-xs text-gray-400 mb-2">
-            <span>Ocupação</span>
-            <span>{pct.toFixed(0)}%</span>
+        <div
+          className="rounded-xl p-4 mb-6 backdrop-blur-md"
+          style={{
+            background: "var(--ai-bg-glass)",
+            border: "1px solid var(--ai-line)",
+          }}
+        >
+          <div
+            className="flex justify-between text-xs mb-2"
+            style={{ color: "var(--ai-muted)" }}
+          >
+            <span className="uppercase tracking-[1.5px]">Ocupação</span>
+            <span style={{ color: "var(--ai-cyan)", fontFamily: "var(--font-jetbrains-mono), monospace" }}>
+              {pct.toFixed(0)}%
+            </span>
           </div>
-          <div className="h-2 rounded-full" style={{ background: "#21262d" }}>
-            <div className="h-2 rounded-full transition-all duration-500"
-              style={{ width: `${pct}%`, background: pct >= 90 ? "#ef4444" : "#e8470a" }} />
+          <div
+            className="h-2 rounded-full overflow-hidden"
+            style={{ background: "rgba(255,255,255,0.06)" }}
+          >
+            <div
+              className="h-2 rounded-full transition-all duration-500"
+              style={{
+                width: `${pct}%`,
+                background:
+                  pct >= 90
+                    ? "linear-gradient(90deg, var(--ai-orange), #ef4444)"
+                    : "linear-gradient(90deg, var(--ai-cyan), var(--ai-orange))",
+              }}
+            />
           </div>
         </div>
 
-        {/* List */}
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid #21262d" }}>
-          <div className="px-4 py-3 grid grid-cols-12 text-[10px] uppercase tracking-widest text-gray-500"
-            style={{ background: "#161b22", borderBottom: "1px solid #21262d" }}>
+        <div
+          className="rounded-xl overflow-hidden backdrop-blur-md"
+          style={{
+            border: "1px solid var(--ai-line)",
+            background: "var(--ai-bg-glass)",
+          }}
+        >
+          <div
+            className="px-4 py-3 grid grid-cols-12 text-[10px] uppercase tracking-[2px]"
+            style={{
+              color: "var(--ai-muted)",
+              borderBottom: "1px solid var(--ai-line)",
+              background: "rgba(0,0,0,0.25)",
+            }}
+          >
             <span className="col-span-1">#</span>
             <span className="col-span-5">Nome</span>
             <span className="col-span-4">Telefone</span>
@@ -90,33 +161,67 @@ export default function AdminPage() {
           </div>
 
           {loading ? (
-            <div className="px-4 py-8 text-center text-gray-500 text-sm" style={{ background: "#0d1117" }}>
+            <div
+              className="px-4 py-8 text-center text-sm"
+              style={{ color: "var(--ai-muted)" }}
+            >
               Carregando...
             </div>
           ) : checkins.length === 0 ? (
-            <div className="px-4 py-8 text-center text-gray-500 text-sm" style={{ background: "#0d1117" }}>
+            <div
+              className="px-4 py-8 text-center text-sm"
+              style={{ color: "var(--ai-muted)" }}
+            >
               Nenhum check-in ainda.
             </div>
           ) : (
             checkins.map((c, i) => (
-              <div key={c.id}
-                className="px-4 py-3 grid grid-cols-12 text-sm items-center"
+              <div
+                key={c.id}
+                className="px-4 py-3 grid grid-cols-12 text-sm items-center transition-colors hover:bg-white/[0.04]"
                 style={{
-                  background: i % 2 === 0 ? "#0d1117" : "#0f1318",
-                  borderBottom: "1px solid #21262d",
-                }}>
-                <span className="col-span-1 text-gray-500 text-xs">{ocupadas - i}</span>
-                <span className="col-span-5 text-white font-medium truncate">{c.nome}</span>
-                <span className="col-span-4 text-gray-400 text-xs">{c.telefone}</span>
-                <span className="col-span-2 text-right text-gray-500 text-xs">
-                  {new Date(c.criado_em).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                  borderBottom: "1px solid var(--ai-line)",
+                }}
+              >
+                <span
+                  className="col-span-1 text-xs"
+                  style={{
+                    color: "var(--ai-cyan)",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
+                  }}
+                >
+                  {String(ocupadas - i).padStart(3, "0")}
+                </span>
+                <span className="col-span-5 text-white font-medium truncate">
+                  {c.nome}
+                </span>
+                <span
+                  className="col-span-4 text-xs"
+                  style={{ color: "var(--ai-muted)" }}
+                >
+                  {c.telefone}
+                </span>
+                <span
+                  className="col-span-2 text-right text-xs"
+                  style={{
+                    color: "var(--ai-muted)",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
+                  }}
+                >
+                  {new Date(c.criado_em).toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </span>
               </div>
             ))
           )}
         </div>
 
-        <p className="text-center text-gray-600 text-xs mt-6">
+        <p
+          className="text-center text-xs mt-6"
+          style={{ color: "var(--ai-muted)" }}
+        >
           Atualização em tempo real via Supabase Realtime
         </p>
       </div>

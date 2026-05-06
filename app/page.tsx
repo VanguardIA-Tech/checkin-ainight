@@ -1,69 +1,160 @@
 "use client";
 
 import QRCode from "react-qr-code";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function QRPage() {
   const [checkinUrl, setCheckinUrl] = useState(
-    process.env.NEXT_PUBLIC_CHECKIN_URL ?? "https://checkin.vanguardiagrupo.com.br/checkin"
+    process.env.NEXT_PUBLIC_CHECKIN_URL ??
+      "https://checkin.vanguardiagrupo.com.br/checkin"
   );
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_CHECKIN_URL) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCheckinUrl(`${window.location.origin}/checkin`);
     }
   }, []);
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-      style={{ background: "#0d1117" }}>
-
-      {/* Logos */}
-      <div className="flex items-center gap-6 mb-10">
-        <span className="text-white font-bold text-2xl tracking-widest uppercase">AI NIGHT</span>
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      <div className="flex items-center gap-5 mb-8">
+        <Image
+          src="/logo-vanguardia.png"
+          alt="VanguardIA"
+          width={170}
+          height={40}
+          priority
+          style={{ height: 40, width: "auto", filter: "brightness(0) invert(1)" }}
+        />
+        <span
+          style={{
+            width: 1,
+            height: 36,
+            background:
+              "linear-gradient(180deg,transparent,var(--ai-cyan),transparent)",
+          }}
+        />
+        <Image
+          src="/logo-doit-hub.png"
+          alt="DO IT Hub"
+          width={110}
+          height={44}
+          priority
+          style={{ height: 44, width: "auto", filter: "brightness(0) invert(1)" }}
+        />
       </div>
 
-      {/* Event info */}
-      <div className="grid grid-cols-2 gap-4 mb-10 w-full max-w-sm">
+      <h1
+        className="font-black text-center mb-2"
+        style={{
+          fontSize: 38,
+          letterSpacing: 6,
+          lineHeight: 1,
+          backgroundImage:
+            "linear-gradient(90deg,#fff 0%,var(--ai-cyan) 50%,var(--ai-gold) 100%)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+          textShadow: "0 0 30px rgba(57,211,255,0.3)",
+        }}
+      >
+        AI&nbsp;NIGHT
+      </h1>
+      <p
+        className="text-[10px] uppercase tracking-[4px] mb-8 text-center"
+        style={{ color: "var(--ai-muted)" }}
+      >
+        CREDENCIAL OFICIAL · Belém · DO IT HUB · 2026
+      </p>
+
+      <div className="grid grid-cols-2 gap-3 mb-8 w-full max-w-sm">
         {[
-          { icon: "📅", label: "Data", value: "6 de maio de 2026", wide: false },
-          { icon: "🕕", label: "Horário", value: "18h", wide: false },
-          { icon: "📍", label: "Local", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém", wide: true },
-          { icon: "🎟️", label: "Acesso", value: "Gratuito", wide: false },
+          { icon: "📅", label: "DATA", value: "6 de maio de 2026", wide: false },
+          { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },
+          {
+            icon: "📍",
+            label: "LOCAL",
+            value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém",
+            wide: true,
+          },
+          { icon: "🎟️", label: "ACESSO", value: "Gratuito", wide: false },
         ].map((item) => (
-          <div key={item.label}
-            className={`rounded-xl p-4 flex gap-3 items-start${item.wide ? " col-span-2" : ""}`}
-            style={{ background: "#161b22", border: "1px solid #21262d" }}>
+          <div
+            key={item.label}
+            className={`rounded-xl p-3 flex gap-2 items-start backdrop-blur-md${
+              item.wide ? " col-span-2" : ""
+            }`}
+            style={{
+              background: "var(--ai-bg-glass)",
+              border: "1px solid var(--ai-line)",
+            }}
+          >
             <span className="text-base mt-0.5">{item.icon}</span>
             <div>
-              <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5">{item.label}</p>
-              <p className="text-white text-sm font-semibold">{item.value}</p>
+              <p
+                className="text-[9px] uppercase tracking-[2px] mb-0.5"
+                style={{ color: "var(--ai-muted)" }}
+              >
+                {item.label}
+              </p>
+              <p className="text-white text-xs font-semibold">{item.value}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* QR Code card */}
-      <div className="rounded-2xl p-8 flex flex-col items-center gap-5 w-full max-w-sm"
-        style={{ background: "#161b22", border: "2px solid #e8470a" }}>
-        <p className="text-[#e8470a] text-xs font-bold uppercase tracking-widest">Check-in</p>
-        <h1 className="text-white text-2xl font-bold text-center">Aponte a câmera</h1>
-        <p className="text-gray-400 text-sm text-center -mt-2">e confirme sua presença no AI Night</p>
+      <div
+        className="rounded-2xl p-7 flex flex-col items-center gap-4 w-full max-w-sm backdrop-blur-md"
+        style={{
+          background: "var(--ai-bg-glass)",
+          border: "2px solid rgba(57,211,255,0.5)",
+          boxShadow:
+            "0 20px 50px rgba(0,0,0,0.4), 0 0 0 4px rgba(57,211,255,0.08)",
+        }}
+      >
+        <p
+          className="text-xs font-bold uppercase tracking-[3px]"
+          style={{ color: "var(--ai-cyan)" }}
+        >
+          Check-in
+        </p>
+        <h2 className="text-white text-2xl font-bold text-center -mt-1">
+          Aponte a câmera
+        </h2>
+        <p
+          className="text-sm text-center -mt-2"
+          style={{ color: "var(--ai-muted)" }}
+        >
+          e gere sua carteirinha do AI Night
+        </p>
 
-        <div className="bg-white rounded-xl p-4">
+        <div
+          className="rounded-xl p-4"
+          style={{ background: "#fff", boxShadow: "0 10px 30px rgba(0,0,0,0.4)" }}
+        >
           <QRCode
             value={checkinUrl}
             size={200}
             bgColor="#ffffff"
-            fgColor="#0d1117"
+            fgColor="#001529"
           />
         </div>
 
-        <p className="text-gray-500 text-xs text-center break-all">{checkinUrl}</p>
+        <p
+          className="text-xs text-center break-all"
+          style={{ color: "var(--ai-muted)" }}
+        >
+          {checkinUrl}
+        </p>
       </div>
 
-      <p className="mt-8 text-gray-500 text-xs text-center">
-        AI Night · Vanguardia × DO IT Hub · Belém, PA
+      <p
+        className="mt-8 text-xs text-center"
+        style={{ color: "var(--ai-muted)" }}
+      >
+        AI Night · VanguardIA × DO IT Hub · Belém, PA
       </p>
     </main>
   );

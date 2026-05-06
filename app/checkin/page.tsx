@@ -1,9 +1,11 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import { useState } from "react";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
+import CarteirinhaCard from "./_components/CarteirinhaCard";
 
 type Step = "form" | "success" | "full";
 
@@ -14,12 +16,14 @@ export default function CheckinPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [nomeConfirmado, setNomeConfirmado] = useState("");
+  const [numeroCredencial, setNumeroCredencial] = useState(0);
 
   function formatPhone(value: string) {
     const digits = value.replace(/\D/g, "").slice(0, 11);
     if (digits.length <= 2) return digits;
     if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-    if (digits.length <= 11) return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+    if (digits.length <= 11)
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
     return value;
   }
 
@@ -39,7 +43,6 @@ export default function CheckinPage() {
 
     setLoading(true);
     try {
-      // Check current count
       const { count } = await supabase
         .from("checkins")
         .select("*", { count: "exact", head: true });
@@ -57,7 +60,8 @@ export default function CheckinPage() {
 
       if (insertError) throw insertError;
 
-      setNomeConfirmado(nome.trim().split(" ")[0]);
+      setNumeroCredencial((count ?? 0) + 1);
+      setNomeConfirmado(nome.trim());
       setStep("success");
     } catch {
       setError("Ops! Algo deu errado. Tente novamente.");
@@ -68,57 +72,69 @@ export default function CheckinPage() {
 
   if (step === "success") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-        style={{ background: "#0d1117" }}>
-        <div className="w-full max-w-md rounded-2xl p-8 text-center flex flex-col items-center gap-6"
-          style={{ background: "#161b22", border: "1px solid #21262d" }}>
-          <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl"
-            style={{ background: "rgba(232,71,10,0.15)", border: "2px solid #e8470a" }}>
-            ✓
-          </div>
-          <div>
-            <h1 className="text-white text-2xl font-bold mb-2">
-              Presença confirmada!
-            </h1>
-            <p className="text-gray-400">
-              Olá, <span className="text-white font-semibold">{nomeConfirmado}</span>! Você está na lista.
+      <main className="min-h-screen px-3 py-6 md:py-10">
+        <div className="max-w-[1200px] mx-auto mb-6 no-print">
+          <div className="flex items-center gap-3 mb-3">
+            <span
+              className="inline-flex items-center justify-center rounded-full"
+              style={{
+                width: 36,
+                height: 36,
+                background: "rgba(57,211,255,0.18)",
+                border: "1px solid rgba(57,211,255,0.5)",
+                color: "var(--ai-cyan)",
+              }}
+            >
+              ✓
+            </span>
+            <p
+              className="text-xs font-bold uppercase tracking-[2px]"
+              style={{ color: "var(--ai-cyan)" }}
+            >
+              Presença confirmada
             </p>
           </div>
-          <div className="w-full rounded-xl p-4 text-left space-y-2"
-            style={{ background: "#0d1117", border: "1px solid #21262d" }}>
-            <p className="text-gray-400 text-sm flex gap-2">
-              <span>📅</span> <span>Quarta-feira, 6 de maio de 2026</span>
-            </p>
-            <p className="text-gray-400 text-sm flex gap-2">
-              <span>🕕</span> <span>18h</span>
-            </p>
-            <p className="text-gray-400 text-sm flex gap-2">
-              <span>📍</span> <span>DO IT Hub — Tv Avertano Rocha, 192, Campina, Belém</span>
-            </p>
-          </div>
-          <p className="text-gray-500 text-xs">
-            Obrigado pela presença! Nos vemos logo mais no evento.
+          <h1 className="text-white font-extrabold text-2xl md:text-3xl">
+            Bem-vindo(a) ao AI Night,{" "}
+            <span style={{ color: "var(--ai-gold)" }}>
+              {nomeConfirmado.split(" ")[0]}
+            </span>
+            .
+          </h1>
+          <p
+            className="text-sm md:text-base mt-1.5"
+            style={{ color: "var(--ai-muted)" }}
+          >
+            Sua carteirinha oficial está pronta. Personalize se quiser e baixe
+            pra mostrar na entrada.
           </p>
         </div>
+
+        <CarteirinhaCard nome={nomeConfirmado} numero={numeroCredencial} />
       </main>
     );
   }
 
   if (step === "full") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-        style={{ background: "#0d1117" }}>
-        <div className="w-full max-w-md rounded-2xl p-8 text-center flex flex-col items-center gap-6"
-          style={{ background: "#161b22", border: "1px solid #21262d" }}>
+      <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+        <div
+          className="w-full max-w-md rounded-2xl p-8 text-center flex flex-col items-center gap-6 backdrop-blur-md"
+          style={{
+            background: "var(--ai-bg-glass)",
+            border: "1px solid var(--ai-line)",
+          }}
+        >
           <div className="text-4xl">😔</div>
           <div>
             <h1 className="text-white text-2xl font-bold mb-2">Vagas esgotadas</h1>
-            <p className="text-gray-400">
-              As 40 vagas do AI Night já foram preenchidas. Fique de olho nos próximos eventos!
+            <p style={{ color: "var(--ai-muted)" }}>
+              As 40 vagas do AI Night já foram preenchidas. Fique de olho nos
+              próximos eventos!
             </p>
           </div>
-          <p className="text-gray-500 text-xs">
-            Vanguardia × DO IT Hub · Belém, PA
+          <p className="text-xs" style={{ color: "var(--ai-muted)" }}>
+            VanguardIA × DO IT Hub · Belém, PA
           </p>
         </div>
       </main>
@@ -126,98 +142,210 @@ export default function CheckinPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-      style={{ background: "#0d1117" }}>
-
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <span className="text-white font-bold text-xl tracking-widest uppercase">AI NIGHT</span>
+    <main className="min-h-screen flex flex-col items-center justify-start px-4 py-10 md:py-14">
+      <div className="flex items-center gap-5 mb-8">
+        <Image
+          src="/logo-vanguardia.png"
+          alt="VanguardIA"
+          width={140}
+          height={32}
+          priority
+          style={{ height: 32, width: "auto", filter: "brightness(0) invert(1)" }}
+        />
+        <span
+          style={{
+            width: 1,
+            height: 28,
+            background:
+              "linear-gradient(180deg,transparent,var(--ai-cyan),transparent)",
+          }}
+        />
+        <Image
+          src="/logo-doit-hub.png"
+          alt="DO IT Hub"
+          width={90}
+          height={36}
+          priority
+          style={{ height: 36, width: "auto", filter: "brightness(0) invert(1)" }}
+        />
       </div>
 
-      {/* Event banner */}
+      <h1
+        className="font-black text-center mb-2"
+        style={{
+          fontSize: 30,
+          letterSpacing: 5,
+          lineHeight: 1,
+          backgroundImage:
+            "linear-gradient(90deg,#fff 0%,var(--ai-cyan) 50%,var(--ai-gold) 100%)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+        }}
+      >
+        AI&nbsp;NIGHT
+      </h1>
+      <p
+        className="text-[10px] uppercase tracking-[3px] mb-8 text-center"
+        style={{ color: "var(--ai-muted)" }}
+      >
+        Confirme sua presença · Belém · DO IT Hub · 2026
+      </p>
+
       <div className="w-full max-w-md grid grid-cols-2 gap-3 mb-8">
         {[
-          { icon: "📅", label: "DATA", value: "6 de maio de 2026", wide: false },
+          {
+            icon: "📅",
+            label: "DATA",
+            value: "6 de maio de 2026",
+            wide: false,
+          },
           { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },
-          { icon: "📍", label: "LOCAL", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém", wide: true },
+          {
+            icon: "📍",
+            label: "LOCAL",
+            value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém",
+            wide: true,
+          },
           { icon: "🎟️", label: "ACESSO", value: "Gratuito", wide: false },
         ].map((item) => (
-          <div key={item.label}
-            className={`rounded-xl p-3 flex gap-2 items-start${item.wide ? " col-span-2" : ""}`}
-            style={{ background: "#161b22", border: "1px solid #21262d" }}>
+          <div
+            key={item.label}
+            className={`rounded-xl p-3 flex gap-2 items-start backdrop-blur-md${
+              item.wide ? " col-span-2" : ""
+            }`}
+            style={{
+              background: "var(--ai-bg-glass)",
+              border: "1px solid var(--ai-line)",
+            }}
+          >
             <span className="text-base mt-0.5">{item.icon}</span>
             <div>
-              <p className="text-[9px] uppercase tracking-widest text-gray-400 mb-0.5">{item.label}</p>
+              <p
+                className="text-[9px] uppercase tracking-[2px] mb-0.5"
+                style={{ color: "var(--ai-muted)" }}
+              >
+                {item.label}
+              </p>
               <p className="text-white text-xs font-semibold">{item.value}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Form card */}
-      <div className="w-full max-w-md rounded-2xl p-6 md:p-8"
-        style={{ background: "linear-gradient(135deg, #161b22 0%, #1a1f2e 100%)", border: "1px solid #21262d" }}>
-
+      <div
+        className="w-full max-w-md rounded-2xl p-6 md:p-8 backdrop-blur-md"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+          border: "1px solid var(--ai-line)",
+        }}
+      >
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-6 h-0.5" style={{ background: "#e8470a" }} />
-          <p className="text-[#e8470a] text-[10px] font-bold uppercase tracking-widest">Confirme sua presença</p>
+          <div
+            className="w-6 h-0.5"
+            style={{ background: "var(--ai-cyan)" }}
+          />
+          <p
+            className="text-[10px] font-bold uppercase tracking-[3px]"
+            style={{ color: "var(--ai-cyan)" }}
+          >
+            Confirme sua presença
+          </p>
         </div>
-        <h2 className="text-white text-2xl font-bold mb-6">Confirmação de Presença no AI Night</h2>
+        <h2 className="text-white text-2xl font-bold mb-6">
+          Garanta sua carteirinha do AI Night
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Nome */}
           <div>
-            <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
+            <label
+              className="block text-[10px] uppercase tracking-[2px] mb-1.5"
+              style={{ color: "var(--ai-muted)" }}
+            >
               Nome Completo
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">👤</span>
+              <span
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-sm"
+                style={{ color: "var(--ai-muted)" }}
+              >
+                👤
+              </span>
               <input
                 type="text"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 placeholder="Como devemos te chamar?"
-                className="w-full rounded-xl pl-9 pr-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:ring-2 transition-all"
+                className="w-full rounded-xl pl-9 pr-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition-all"
                 style={{
-                  background: "#0d1117",
-                  border: "1px solid #21262d",
-                  outline: "none",
+                  background: "rgba(0,0,0,0.35)",
+                  border: "1px solid var(--ai-line)",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "#e8470a")}
-                onBlur={(e) => (e.target.style.borderColor = "#21262d")}
+                onFocus={(e) =>
+                  (e.target.style.borderColor = "var(--ai-cyan)")
+                }
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "var(--ai-line)")
+                }
               />
             </div>
           </div>
 
-          {/* Telefone */}
           <div>
-            <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
+            <label
+              className="block text-[10px] uppercase tracking-[2px] mb-1.5"
+              style={{ color: "var(--ai-muted)" }}
+            >
               WhatsApp / Celular
             </label>
             <div className="flex gap-2">
-              <div className="rounded-xl px-3 flex items-center text-gray-300 text-sm font-semibold flex-shrink-0"
-                style={{ background: "#0d1117", border: "1px solid #21262d" }}>
+              <div
+                className="rounded-xl px-3 flex items-center text-white text-sm font-semibold flex-shrink-0"
+                style={{
+                  background: "rgba(0,0,0,0.35)",
+                  border: "1px solid var(--ai-line)",
+                }}
+              >
                 +55
               </div>
               <div className="relative flex-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">📱</span>
+                <span
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-sm"
+                  style={{ color: "var(--ai-muted)" }}
+                >
+                  📱
+                </span>
                 <input
                   type="tel"
                   value={telefone}
                   onChange={(e) => setTelefone(formatPhone(e.target.value))}
                   placeholder="(91) 9 0000-0000"
-                  className="w-full rounded-xl pl-9 pr-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-all"
-                  style={{ background: "#0d1117", border: "1px solid #21262d" }}
-                  onFocus={(e) => (e.target.style.borderColor = "#e8470a")}
-                  onBlur={(e) => (e.target.style.borderColor = "#21262d")}
+                  className="w-full rounded-xl pl-9 pr-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition-all"
+                  style={{
+                    background: "rgba(0,0,0,0.35)",
+                    border: "1px solid var(--ai-line)",
+                  }}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "var(--ai-cyan)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "var(--ai-line)")
+                  }
                 />
               </div>
             </div>
           </div>
 
           {error && (
-            <p className="text-red-400 text-xs rounded-lg px-3 py-2"
-              style={{ background: "rgba(239,68,68,0.1)" }}>
+            <p
+              className="text-xs rounded-lg px-3 py-2"
+              style={{
+                color: "#fca5a5",
+                background: "rgba(239,68,68,0.1)",
+                border: "1px solid rgba(239,68,68,0.3)",
+              }}
+            >
               {error}
             </p>
           )}
@@ -225,16 +353,32 @@ export default function CheckinPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl py-3.5 text-white font-bold text-sm transition-all active:scale-95 disabled:opacity-60"
-            style={{ background: loading ? "#c93d09" : "#e8470a" }}>
-            {loading ? "Confirmando..." : "Confirmar Presença"}
+            className="w-full rounded-xl py-3.5 text-white font-bold text-sm uppercase tracking-[1px] transition-all active:scale-95 disabled:opacity-60"
+            style={{
+              background: loading
+                ? "linear-gradient(135deg, #1d36c0, #1aa3c9)"
+                : "linear-gradient(135deg, var(--ai-blue), var(--ai-cyan))",
+              boxShadow: "0 8px 20px rgba(39,71,255,0.3)",
+            }}
+          >
+            {loading ? "Confirmando..." : "Confirmar e gerar carteirinha"}
           </button>
         </form>
 
-        <p className="text-gray-500 text-xs text-center mt-4 flex items-center justify-center gap-1">
+        <p
+          className="text-xs text-center mt-4 flex items-center justify-center gap-1"
+          style={{ color: "var(--ai-muted)" }}
+        >
           <span>🔒</span> Seus dados ficam protegidos. Sem spam, sem ligação fria.
         </p>
       </div>
+
+      <p
+        className="mt-8 text-xs text-center"
+        style={{ color: "var(--ai-muted)" }}
+      >
+        VanguardIA × DO IT Hub · Belém, PA
+      </p>
     </main>
   );
 }

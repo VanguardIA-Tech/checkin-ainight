@@ -1,17 +1,30 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Check-in · AI Night — Vanguardia",
-  description: "Confirme sua presença no AI Night · 6 de maio · 18h · DO IT Hub",
+  title: "AI Night · Carteirinha Oficial — VanguardIA × DO IT Hub",
+  description:
+    "Confirme sua presença no AI Night e gere sua carteirinha oficial · 6 de maio · 18h · DO IT Hub Belém",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${geist.variable} h-full`}>
+    <html lang="pt-BR" className={`${poppins.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">{children}</body>
     </html>
   );

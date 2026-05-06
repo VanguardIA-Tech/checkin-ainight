@@ -1,19 +1,73 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0d1117;
-  --foreground: #ffffff;
+  --ai-deep: #001529;
+  --ai-night: #020a18;
+  --ai-blue: #2747ff;
+  --ai-blue-soft: #4a6bff;
+  --ai-cyan: #39d3ff;
+  --ai-orange: #ff7a00;
+  --ai-gold: #ffb547;
+  --ai-text: #e8eefc;
+  --ai-muted: #8a9bbf;
+  --ai-line: rgba(255, 255, 255, 0.12);
+  --ai-bg-glass: rgba(255, 255, 255, 0.04);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--ai-night);
+  --color-foreground: var(--ai-text);
+  --color-cyan-ai: var(--ai-cyan);
+  --color-orange-ai: var(--ai-orange);
+  --color-gold-ai: var(--ai-gold);
+  --color-muted-ai: var(--ai-muted);
+  --color-line-ai: var(--ai-line);
+  --font-sans: var(--font-poppins);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+html,
+body {
+  color: var(--ai-text);
+  font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 600px at 15% 0%, rgba(39, 71, 255, 0.25), transparent 60%),
+    radial-gradient(900px 600px at 100% 100%, rgba(255, 122, 0, 0.18), transparent 55%),
+    linear-gradient(135deg, #000814 0%, #001529 50%, #020a18 100%);
+  background-attachment: fixed;
+}
+
+@keyframes ai-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translateX(-50%) scale(0.7);
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .ai-card {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid;
+  }
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
 }
