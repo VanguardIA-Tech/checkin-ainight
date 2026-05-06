@@ -37,7 +37,7 @@ export default function AdminPage() {
     };
   }, []);
 
-  const vagas = 40;
+  const vagas = parseInt(process.env.NEXT_PUBLIC_MAX_VAGAS ?? "200");
   const ocupadas = checkins.length;
   const livres = Math.max(0, vagas - ocupadas);
   const pct = Math.min(100, (ocupadas / vagas) * 100);

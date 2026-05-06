@@ -47,7 +47,7 @@ export default function CheckinPage() {
         .from("checkins")
         .select("*", { count: "exact", head: true });
 
-      const MAX_VAGAS = parseInt(process.env.NEXT_PUBLIC_MAX_VAGAS ?? "40");
+      const MAX_VAGAS = parseInt(process.env.NEXT_PUBLIC_MAX_VAGAS ?? "200");
       if (count !== null && count >= MAX_VAGAS) {
         setStep("full");
         return;
@@ -92,7 +92,7 @@ export default function CheckinPage() {
           <div>
             <h1 className="text-white text-2xl font-bold mb-2">Vagas esgotadas</h1>
             <p style={{ color: "var(--ai-muted)" }}>
-              As 40 vagas do AI Night já foram preenchidas. Fique de olho nos
+              As 200 vagas do AI Night já foram preenchidas. Fique de olho nos
               próximos eventos!
             </p>
           </div>
