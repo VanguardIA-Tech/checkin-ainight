@@ -1,5 +1,9 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
+const SUPABASE_URL = 'https://sogwjhtohkqqpntslsyj.supabase.co'
+const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvZ3dqaHRvaGtxcXBudHNsc3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNjc2MTcsImV4cCI6MjA5MzY0MzYxN30.HMLeLBAhrgzBk3PQSds02PpnM1xkc1X9edEZWx6PVec'
+
 export type Checkin = {
   id: string
   nome: string
@@ -10,15 +14,12 @@ export type Checkin = {
 let _client: SupabaseClient | null = null
 
 export function getSupabase(): SupabaseClient {
-  if (_client) return _client
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!url || !key) throw new Error('Supabase env vars not configured')
-  _client = createClient(url, key)
+  if (!_client) {
+    _client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  }
   return _client
 }
 
-// Lazy proxy — safe to import at module level
 export const supabase = new Proxy({} as SupabaseClient, {
   get(_target, prop) {
     return (getSupabase() as unknown as Record<string | symbol, unknown>)[prop]
