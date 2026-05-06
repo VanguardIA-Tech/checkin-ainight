@@ -72,44 +72,7 @@ export default function CheckinPage() {
 
   if (step === "success") {
     return (
-      <main className="min-h-screen px-3 py-6 md:py-10">
-        <div className="max-w-[1200px] mx-auto mb-6 no-print">
-          <div className="flex items-center gap-3 mb-3">
-            <span
-              className="inline-flex items-center justify-center rounded-full"
-              style={{
-                width: 36,
-                height: 36,
-                background: "rgba(57,211,255,0.18)",
-                border: "1px solid rgba(57,211,255,0.5)",
-                color: "var(--ai-cyan)",
-              }}
-            >
-              ✓
-            </span>
-            <p
-              className="text-xs font-bold uppercase tracking-[2px]"
-              style={{ color: "var(--ai-cyan)" }}
-            >
-              Presença confirmada
-            </p>
-          </div>
-          <h1 className="text-white font-extrabold text-2xl md:text-3xl">
-            Bem-vindo(a) ao AI Night,{" "}
-            <span style={{ color: "var(--ai-gold)" }}>
-              {nomeConfirmado.split(" ")[0]}
-            </span>
-            .
-          </h1>
-          <p
-            className="text-sm md:text-base mt-1.5"
-            style={{ color: "var(--ai-muted)" }}
-          >
-            Sua carteirinha oficial está pronta. Personalize se quiser e baixe
-            pra mostrar na entrada.
-          </p>
-        </div>
-
+      <main className="min-h-screen px-2 py-6 md:py-10">
         <CarteirinhaCard nome={nomeConfirmado} numero={numeroCredencial} />
       </main>
     );

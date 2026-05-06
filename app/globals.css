@@ -53,21 +53,3 @@ body {
   }
 }
 
-@media print {
-  body {
-    background: #fff !important;
-    padding: 0;
-  }
-  .no-print {
-    display: none !important;
-  }
-  .ai-card {
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    page-break-inside: avoid;
-  }
-  @page {
-    size: A4 landscape;
-    margin: 8mm;
-  }
-}
