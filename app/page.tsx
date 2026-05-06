@@ -26,12 +26,13 @@ export default function QRPage() {
       {/* Event info */}
       <div className="grid grid-cols-2 gap-4 mb-10 w-full max-w-sm">
         {[
-          { icon: "📅", label: "Data", value: "6 de maio de 2026" },
-          { icon: "🕕", label: "Horário", value: "18h" },
-          { icon: "📍", label: "Local", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém" },
-          { icon: "🎟️", label: "Acesso", value: "Gratuito" },
+          { icon: "📅", label: "Data", value: "6 de maio de 2026", wide: false },
+          { icon: "🕕", label: "Horário", value: "18h", wide: false },
+          { icon: "📍", label: "Local", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém", wide: true },
+          { icon: "🎟️", label: "Acesso", value: "Gratuito", wide: false },
         ].map((item) => (
-          <div key={item.label} className="rounded-xl p-4 flex gap-3 items-start"
+          <div key={item.label}
+            className={`rounded-xl p-4 flex gap-3 items-start${item.wide ? " col-span-2" : ""}`}
             style={{ background: "#161b22", border: "1px solid #21262d" }}>
             <span className="text-base mt-0.5">{item.icon}</span>
             <div>

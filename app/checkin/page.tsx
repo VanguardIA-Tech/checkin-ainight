@@ -137,12 +137,13 @@ export default function CheckinPage() {
       {/* Event banner */}
       <div className="w-full max-w-md grid grid-cols-2 gap-3 mb-8">
         {[
-          { icon: "📅", label: "DATA", value: "6 de maio de 2026" },
-          { icon: "🕕", label: "HORÁRIO", value: "18h" },
-          { icon: "📍", label: "LOCAL", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém" },
-          { icon: "🎟️", label: "ACESSO", value: "Gratuito" },
+          { icon: "📅", label: "DATA", value: "6 de maio de 2026", wide: false },
+          { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },
+          { icon: "📍", label: "LOCAL", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém", wide: true },
+          { icon: "🎟️", label: "ACESSO", value: "Gratuito", wide: false },
         ].map((item) => (
-          <div key={item.label} className="rounded-xl p-3 flex gap-2 items-start"
+          <div key={item.label}
+            className={`rounded-xl p-3 flex gap-2 items-start${item.wide ? " col-span-2" : ""}`}
             style={{ background: "#161b22", border: "1px solid #21262d" }}>
             <span className="text-base mt-0.5">{item.icon}</span>
             <div>
