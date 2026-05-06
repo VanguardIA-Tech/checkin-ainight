@@ -1,10 +1,19 @@
 "use client";
 
 import QRCode from "react-qr-code";
-
-const CHECKIN_URL = process.env.NEXT_PUBLIC_CHECKIN_URL ?? "https://checkin-ainight.vercel.app/checkin";
+import { useEffect, useState } from "react";
 
 export default function QRPage() {
+  const [checkinUrl, setCheckinUrl] = useState(
+    process.env.NEXT_PUBLIC_CHECKIN_URL ?? "https://checkin.vanguardiagrupo.com.br/checkin"
+  );
+
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_CHECKIN_URL) {
+      setCheckinUrl(`${window.location.origin}/checkin`);
+    }
+  }, []);
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
       style={{ background: "#0d1117" }}>
@@ -18,34 +27,21 @@ export default function QRPage() {
 
       {/* Event info */}
       <div className="grid grid-cols-2 gap-4 mb-10 w-full max-w-sm">
-        <div className="rounded-xl p-4 flex gap-3 items-start" style={{ background: "#161b22", border: "1px solid #21262d" }}>
-          <span className="text-[#e8470a] text-lg mt-0.5">📅</span>
-          <div>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5">Data</p>
-            <p className="text-white text-sm font-semibold">6 de maio de 2026</p>
+        {[
+          { icon: "📅", label: "Data", value: "6 de maio de 2026" },
+          { icon: "🕕", label: "Horário", value: "18h" },
+          { icon: "📍", label: "Local", value: "DO IT Hub · Belém" },
+          { icon: "🎟️", label: "Acesso", value: "Gratuito · 40 vagas" },
+        ].map((item) => (
+          <div key={item.label} className="rounded-xl p-4 flex gap-3 items-start"
+            style={{ background: "#161b22", border: "1px solid #21262d" }}>
+            <span className="text-base mt-0.5">{item.icon}</span>
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5">{item.label}</p>
+              <p className="text-white text-sm font-semibold">{item.value}</p>
+            </div>
           </div>
-        </div>
-        <div className="rounded-xl p-4 flex gap-3 items-start" style={{ background: "#161b22", border: "1px solid #21262d" }}>
-          <span className="text-[#e8470a] text-lg mt-0.5">🕕</span>
-          <div>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5">Horário</p>
-            <p className="text-white text-sm font-semibold">18h</p>
-          </div>
-        </div>
-        <div className="rounded-xl p-4 flex gap-3 items-start" style={{ background: "#161b22", border: "1px solid #21262d" }}>
-          <span className="text-[#e8470a] text-lg mt-0.5">📍</span>
-          <div>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5">Local</p>
-            <p className="text-white text-sm font-semibold">DO IT Hub</p>
-          </div>
-        </div>
-        <div className="rounded-xl p-4 flex gap-3 items-start" style={{ background: "#161b22", border: "1px solid #21262d" }}>
-          <span className="text-[#e8470a] text-lg mt-0.5">🎟️</span>
-          <div>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5">Acesso</p>
-            <p className="text-white text-sm font-semibold">Gratuito · 40 vagas</p>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* QR Code card */}
@@ -57,14 +53,14 @@ export default function QRPage() {
 
         <div className="bg-white rounded-xl p-4">
           <QRCode
-            value={CHECKIN_URL}
+            value={checkinUrl}
             size={200}
             bgColor="#ffffff"
             fgColor="#0d1117"
           />
         </div>
 
-        <p className="text-gray-500 text-xs text-center break-all">{CHECKIN_URL}</p>
+        <p className="text-gray-500 text-xs text-center break-all">{checkinUrl}</p>
       </div>
 
       <p className="mt-8 text-gray-500 text-xs text-center">
