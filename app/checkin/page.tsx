@@ -93,7 +93,7 @@ export default function CheckinPage() {
               <span>🕕</span> <span>18h</span>
             </p>
             <p className="text-gray-400 text-sm flex gap-2">
-              <span>📍</span> <span>DO IT Hub — Rua Avertano Rocha, 192, Campina, Belém</span>
+              <span>📍</span> <span>DO IT Hub — Tv Avertano Rocha, 192, Campina, Belém</span>
             </p>
           </div>
           <p className="text-gray-500 text-xs">
@@ -131,9 +131,7 @@ export default function CheckinPage() {
 
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <span className="text-white font-bold text-base tracking-widest uppercase">VANGUARDIA</span>
-        <span className="text-[#e8470a] font-bold">×</span>
-        <span className="text-white font-bold text-base tracking-widest uppercase">IT HUB</span>
+        <span className="text-white font-bold text-xl tracking-widest uppercase">AI NIGHT</span>
       </div>
 
       {/* Event banner */}
@@ -141,8 +139,8 @@ export default function CheckinPage() {
         {[
           { icon: "📅", label: "DATA", value: "6 de maio de 2026" },
           { icon: "🕕", label: "HORÁRIO", value: "18h" },
-          { icon: "📍", label: "LOCAL", value: "DO IT Hub · Belém" },
-          { icon: "🎟️", label: "ACESSO", value: "Gratuito · 40 vagas" },
+          { icon: "📍", label: "LOCAL", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém" },
+          { icon: "🎟️", label: "ACESSO", value: "Gratuito" },
         ].map((item) => (
           <div key={item.label} className="rounded-xl p-3 flex gap-2 items-start"
             style={{ background: "#161b22", border: "1px solid #21262d" }}>
@@ -163,10 +161,7 @@ export default function CheckinPage() {
           <div className="w-6 h-0.5" style={{ background: "#e8470a" }} />
           <p className="text-[#e8470a] text-[10px] font-bold uppercase tracking-widest">Confirme sua presença</p>
         </div>
-        <h2 className="text-white text-2xl font-bold mb-1">Garanta sua vaga</h2>
-        <p className="text-gray-400 text-sm mb-6">
-          Preencha em 30 segundos e confirme sua presença no AI Night.
-        </p>
+        <h2 className="text-white text-2xl font-bold mb-6">Confirmação de Presença no AI Night</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Nome */}
@@ -231,7 +226,7 @@ export default function CheckinPage() {
             disabled={loading}
             className="w-full rounded-xl py-3.5 text-white font-bold text-sm transition-all active:scale-95 disabled:opacity-60"
             style={{ background: loading ? "#c93d09" : "#e8470a" }}>
-            {loading ? "Confirmando..." : "Quero minha vaga →"}
+            {loading ? "Confirmando..." : "Confirmar Presença"}
           </button>
         </form>
 

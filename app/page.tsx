@@ -20,9 +20,7 @@ export default function QRPage() {
 
       {/* Logos */}
       <div className="flex items-center gap-6 mb-10">
-        <span className="text-white font-bold text-xl tracking-widest uppercase">VANGUARDIA</span>
-        <span className="text-[#e8470a] font-bold text-2xl">×</span>
-        <span className="text-white font-bold text-xl tracking-widest uppercase">IT HUB</span>
+        <span className="text-white font-bold text-2xl tracking-widest uppercase">AI NIGHT</span>
       </div>
 
       {/* Event info */}
@@ -30,8 +28,8 @@ export default function QRPage() {
         {[
           { icon: "📅", label: "Data", value: "6 de maio de 2026" },
           { icon: "🕕", label: "Horário", value: "18h" },
-          { icon: "📍", label: "Local", value: "DO IT Hub · Belém" },
-          { icon: "🎟️", label: "Acesso", value: "Gratuito · 40 vagas" },
+          { icon: "📍", label: "Local", value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém" },
+          { icon: "🎟️", label: "Acesso", value: "Gratuito" },
         ].map((item) => (
           <div key={item.label} className="rounded-xl p-4 flex gap-3 items-start"
             style={{ background: "#161b22", border: "1px solid #21262d" }}>
