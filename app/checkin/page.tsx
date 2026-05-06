@@ -97,7 +97,7 @@ export default function CheckinPage() {
             </p>
           </div>
           <p className="text-gray-500 text-xs">
-            Até logo! Nos vemos às 18h no DO IT Hub. 🚀
+            Obrigado pela presença! Nos vemos logo mais no evento.
           </p>
         </div>
       </main>
