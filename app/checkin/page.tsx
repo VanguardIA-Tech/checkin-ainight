@@ -7,7 +7,7 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import CarteirinhaCard from "./_components/CarteirinhaCard";
 
-type Step = "form" | "success" | "full";
+type Step = "form" | "success" ;
 
 export default function CheckinPage() {
   const [step, setStep] = useState<Step>("form");
@@ -54,7 +54,7 @@ export default function CheckinPage() {
 
       if (insertError) throw insertError;
 
-      setNumeroCredencial((count ?? 0) + 1);
+      setNumeroCredencial(Date.now() + 1);
       setNomeConfirmado(nome.trim());
       setStep("success");
     } catch {
@@ -154,7 +154,7 @@ export default function CheckinPage() {
           {
             icon: "📅",
             label: "DATA",
-            value: "6 de maio de 2026",
+            value: "3 de julho de 2026",
             wide: false,
           },
           { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },

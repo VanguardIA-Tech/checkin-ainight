@@ -71,7 +71,7 @@ export default function QRPage() {
 
       <div className="grid grid-cols-2 gap-3 mb-8 w-full max-w-sm">
         {[
-          { icon: "📅", label: "DATA", value: "6 de maio de 2026", wide: false },
+          { icon: "📅", label: "DATA", value: "3 de julho de 2026", wide: false },
           { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },
           {
             icon: "📍",
