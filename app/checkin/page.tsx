@@ -72,32 +72,6 @@ export default function CheckinPage() {
     );
   }
 
-  if (step === "full") {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-        <div
-          className="w-full max-w-md rounded-2xl p-8 text-center flex flex-col items-center gap-6 backdrop-blur-md"
-          style={{
-            background: "var(--ai-bg-glass)",
-            border: "1px solid var(--ai-line)",
-          }}
-        >
-          <div className="text-4xl">😔</div>
-          <div>
-            <h1 className="text-white text-2xl font-bold mb-2">Vagas esgotadas</h1>
-            <p style={{ color: "var(--ai-muted)" }}>
-              As 200 vagas do AI Night já foram preenchidas. Fique de olho nos
-              próximos eventos!
-            </p>
-          </div>
-          <p className="text-xs" style={{ color: "var(--ai-muted)" }}>
-            VanguardIA × DO IT Hub · Belém, PA
-          </p>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen flex flex-col items-center justify-start px-4 py-10 md:py-14">
       <div className="flex items-center gap-5 mb-8">
