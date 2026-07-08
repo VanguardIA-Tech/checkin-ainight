@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, JetBrains_Mono } from "next/font/google";
+import { connection } from "next/server";
 import { formatLongDate } from "@/lib/date";
 import "./globals.css";
 
@@ -24,7 +25,11 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Força renderização dinâmica em toda a árvore (nada de shell estático
+  // "congelado" no build) para que datas fiquem sempre atuais.
+  await connection();
+
   return (
     <html lang="pt-BR" className={`${poppins.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">{children}</body>

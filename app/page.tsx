@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import QRCode from "react-qr-code";
 import Image from "next/image";
 import { useEffect, useState } from "react";
