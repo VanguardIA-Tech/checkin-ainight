@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { ArrowLeft, Camera, Check, ImageOff, Sparkles, Star } from "lucide-react";
+import { useToday } from "@/lib/useToday";
+import { formatShortDateParts } from "@/lib/date";
 
 type Props = {
   nome: string;
@@ -31,14 +34,14 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
       <div className="w-full flex flex-col items-center px-3 pb-10">
         <button
           onClick={() => setGenerated(false)}
-          className="self-start mb-4 text-[11px] uppercase tracking-[2px] px-3 py-2 rounded-lg transition-colors hover:bg-white/[0.06]"
+          className="self-start mb-4 inline-flex items-center gap-1 text-[11px] uppercase tracking-[2px] px-3 py-2 rounded-lg transition-colors hover:bg-white/[0.06]"
           style={{
             color: "var(--ai-muted)",
             background: "var(--ai-bg-glass)",
             border: "1px solid var(--ai-line)",
           }}
         >
-          ← Editar
+          <ArrowLeft size={13} /> Editar
         </button>
 
         <Card
@@ -49,10 +52,10 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
         />
 
         <p
-          className="text-[11px] uppercase tracking-[2px] mt-6 text-center"
+          className="inline-flex items-center justify-center gap-1.5 w-full text-[11px] uppercase tracking-[2px] mt-6 text-center"
           style={{ color: "var(--ai-muted)" }}
         >
-          📸 Tire um print e poste · #AINight
+          <Camera size={13} /> Tire um print e poste · #AINight
         </p>
       </div>
     );
@@ -75,7 +78,7 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
               fontSize: 13,
             }}
           >
-            ✓
+            <Check size={14} strokeWidth={3} />
           </span>
           <span
             className="text-[10px] font-bold uppercase tracking-[2px]"
@@ -135,6 +138,7 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
               border: "1px solid var(--ai-line)",
               color: "var(--ai-text)",
             }}
+            suppressHydrationWarning
           />
         </label>
 
@@ -148,14 +152,22 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="rounded-lg px-3 py-2.5 text-sm font-semibold uppercase tracking-[1px] transition-all"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-sm font-semibold uppercase tracking-[1px] transition-all"
             style={{
               background: "rgba(57,211,255,0.12)",
               border: "1px solid rgba(57,211,255,0.4)",
               color: "var(--ai-cyan)",
             }}
           >
-            {fotoDataUrl ? "✓ Trocar foto" : "📷 Carregar foto"}
+            {fotoDataUrl ? (
+              <>
+                <Check size={14} /> Trocar foto
+              </>
+            ) : (
+              <>
+                <Camera size={14} /> Carregar foto
+              </>
+            )}
           </button>
           <input
             ref={fileInputRef}
@@ -169,7 +181,7 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
         <button
           type="button"
           onClick={() => setGenerated(true)}
-          className="w-full rounded-xl py-3.5 font-bold text-sm uppercase tracking-[1.5px] active:scale-[0.98] transition-transform"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-sm uppercase tracking-[1.5px] active:scale-[0.98] transition-transform"
           style={{
             background:
               "linear-gradient(135deg, var(--ai-orange), var(--ai-gold))",
@@ -177,7 +189,7 @@ export default function CarteirinhaCard({ nome, numero }: Props) {
             boxShadow: "0 8px 24px rgba(255,122,0,0.35)",
           }}
         >
-          ✦ Gerar carteira
+          <Sparkles size={16} /> Gerar carteira
         </button>
       </div>
 
@@ -202,6 +214,11 @@ function Card({
   credencial: string;
   fotoDataUrl: string | null;
 }) {
+  const today = useToday();
+  const { dia, mes, ano } = today
+    ? formatShortDateParts(today)
+    : { dia: "--", mes: "--", ano: "----" };
+
   return (
     <div
       className="ai-card relative overflow-hidden text-white mx-auto"
@@ -320,6 +337,7 @@ function Card({
             />
           ) : (
             <span
+              className="flex flex-col items-center gap-1.5"
               style={{
                 color: "var(--ai-muted)",
                 fontSize: 11,
@@ -328,7 +346,8 @@ function Card({
                 padding: "0 10px",
               }}
             >
-              📸 Sem foto
+              <ImageOff size={20} />
+              Sem foto
             </span>
           )}
           <Corner pos="tl" />
@@ -451,7 +470,7 @@ function Card({
         {/* Perks 2x2 */}
         <div className="w-full">
           <p
-            className="uppercase font-bold mb-2"
+            className="flex items-center gap-1.5 uppercase font-bold mb-2"
             style={{
               fontSize: 10,
               letterSpacing: "0.2em",
@@ -460,7 +479,7 @@ function Card({
               paddingBottom: 5,
             }}
           >
-            ★ Acessos &amp; Habilidades
+            <Star size={12} /> Acessos &amp; Habilidades
           </p>
           <div className="grid grid-cols-2 gap-2">
             <Perk
@@ -525,7 +544,7 @@ function Card({
           {credencial.replace("AIN", "")}
         </FootCell>
         <FootCell label="Data" align="center">
-          06/05/<span style={{ color: "var(--ai-cyan)" }}>2026</span>
+          {dia}/{mes}/<span style={{ color: "var(--ai-cyan)" }}>{ano}</span>
         </FootCell>
         <FootCell label="Local" align="right">
           DO IT <span style={{ color: "var(--ai-cyan)" }}>·</span> Belém

@@ -1,14 +1,21 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import QRCode from "react-qr-code";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Calendar, Clock, MapPin, Ticket } from "lucide-react";
+import { useToday } from "@/lib/useToday";
+import { formatLongDate } from "@/lib/date";
 
 export default function QRPage() {
   const [checkinUrl, setCheckinUrl] = useState(
     process.env.NEXT_PUBLIC_CHECKIN_URL ??
       "https://checkin.vanguardiagrupo.com.br/checkin"
   );
+  const today = useToday();
+  const dataLabel = today ? formatLongDate(today) : "—";
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_CHECKIN_URL) {
@@ -71,15 +78,15 @@ export default function QRPage() {
 
       <div className="grid grid-cols-2 gap-3 mb-8 w-full max-w-sm">
         {[
-          { icon: "📅", label: "DATA", value: "3 de julho de 2026", wide: false },
-          { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },
+          { icon: Calendar, label: "DATA", value: dataLabel, wide: false },
+          { icon: Clock, label: "HORÁRIO", value: "18h", wide: false },
           {
-            icon: "📍",
+            icon: MapPin,
             label: "LOCAL",
             value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém",
             wide: true,
           },
-          { icon: "🎟️", label: "ACESSO", value: "Gratuito", wide: false },
+          { icon: Ticket, label: "ACESSO", value: "Gratuito", wide: false },
         ].map((item) => (
           <div
             key={item.label}
@@ -91,7 +98,12 @@ export default function QRPage() {
               border: "1px solid var(--ai-line)",
             }}
           >
-            <span className="text-base mt-0.5">{item.icon}</span>
+            <item.icon
+              size={18}
+              strokeWidth={2.25}
+              className="mt-0.5 flex-shrink-0"
+              style={{ color: "var(--ai-cyan)" }}
+            />
             <div>
               <p
                 className="text-[9px] uppercase tracking-[2px] mb-0.5"

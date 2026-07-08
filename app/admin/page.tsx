@@ -3,11 +3,16 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
+import { RefreshCw } from "lucide-react";
 import { supabase, Checkin } from "@/lib/supabase";
+import { useToday } from "@/lib/useToday";
+import { formatLongDate, formatTime } from "@/lib/date";
 
 export default function AdminPage() {
   const [checkins, setCheckins] = useState<Checkin[]>([]);
   const [loading, setLoading] = useState(true);
+  const today = useToday();
+  const dataLabel = today ? formatLongDate(today) : "—";
 
   async function fetchCheckins() {
     setLoading(true);
@@ -63,19 +68,19 @@ export default function AdminPage() {
               AI Night · Check-ins
             </h1>
             <p className="text-sm" style={{ color: "var(--ai-muted)" }}>
-              6 de maio de 2026 · 18h · DO IT Hub
+              {dataLabel} · 18h · DO IT Hub
             </p>
           </div>
           <button
             onClick={fetchCheckins}
-            className="text-xs rounded-lg px-3 py-2 transition-all"
+            className="inline-flex items-center gap-1.5 text-xs rounded-lg px-3 py-2 transition-all"
             style={{
               color: "var(--ai-muted)",
               border: "1px solid var(--ai-line)",
               background: "var(--ai-bg-glass)",
             }}
           >
-            ↻ Atualizar
+            <RefreshCw size={13} /> Atualizar
           </button>
         </div>
 
@@ -208,10 +213,7 @@ export default function AdminPage() {
                     fontFamily: "var(--font-jetbrains-mono), monospace",
                   }}
                 >
-                  {new Date(c.criado_em).toLocaleTimeString("pt-BR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {formatTime(new Date(c.criado_em))}
                 </span>
               </div>
             ))

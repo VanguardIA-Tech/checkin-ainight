@@ -4,7 +4,10 @@ export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import Image from "next/image";
+import { Calendar, Clock, Lock, MapPin, Smartphone, Ticket, User } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useToday } from "@/lib/useToday";
+import { formatLongDate } from "@/lib/date";
 import CarteirinhaCard from "./_components/CarteirinhaCard";
 
 type Step = "form" | "success" ;
@@ -17,6 +20,8 @@ export default function CheckinPage() {
   const [error, setError] = useState("");
   const [nomeConfirmado, setNomeConfirmado] = useState("");
   const [numeroCredencial, setNumeroCredencial] = useState(0);
+  const today = useToday();
+  const dataLabel = today ? formatLongDate(today) : "—";
 
   function formatPhone(value: string) {
     const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -126,19 +131,19 @@ export default function CheckinPage() {
       <div className="w-full max-w-md grid grid-cols-2 gap-3 mb-8">
         {[
           {
-            icon: "📅",
+            icon: Calendar,
             label: "DATA",
-            value: "3 de julho de 2026",
+            value: dataLabel,
             wide: false,
           },
-          { icon: "🕕", label: "HORÁRIO", value: "18h", wide: false },
+          { icon: Clock, label: "HORÁRIO", value: "18h", wide: false },
           {
-            icon: "📍",
+            icon: MapPin,
             label: "LOCAL",
             value: "DO IT Hub · Tv Avertano Rocha, 192, Campina, Belém",
             wide: true,
           },
-          { icon: "🎟️", label: "ACESSO", value: "Gratuito", wide: false },
+          { icon: Ticket, label: "ACESSO", value: "Gratuito", wide: false },
         ].map((item) => (
           <div
             key={item.label}
@@ -150,7 +155,12 @@ export default function CheckinPage() {
               border: "1px solid var(--ai-line)",
             }}
           >
-            <span className="text-base mt-0.5">{item.icon}</span>
+            <item.icon
+              size={18}
+              strokeWidth={2.25}
+              className="mt-0.5 flex-shrink-0"
+              style={{ color: "var(--ai-cyan)" }}
+            />
             <div>
               <p
                 className="text-[9px] uppercase tracking-[2px] mb-0.5"
@@ -197,12 +207,11 @@ export default function CheckinPage() {
               Nome Completo
             </label>
             <div className="relative">
-              <span
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-sm"
+              <User
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2"
                 style={{ color: "var(--ai-muted)" }}
-              >
-                👤
-              </span>
+              />
               <input
                 type="text"
                 value={nome}
@@ -219,6 +228,7 @@ export default function CheckinPage() {
                 onBlur={(e) =>
                   (e.target.style.borderColor = "var(--ai-line)")
                 }
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -241,12 +251,11 @@ export default function CheckinPage() {
                 +55
               </div>
               <div className="relative flex-1">
-                <span
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-sm"
+                <Smartphone
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2"
                   style={{ color: "var(--ai-muted)" }}
-                >
-                  📱
-                </span>
+                />
                 <input
                   type="tel"
                   value={telefone}
@@ -263,6 +272,7 @@ export default function CheckinPage() {
                   onBlur={(e) =>
                     (e.target.style.borderColor = "var(--ai-line)")
                   }
+                  suppressHydrationWarning
                 />
               </div>
             </div>
@@ -300,7 +310,7 @@ export default function CheckinPage() {
           className="text-xs text-center mt-4 flex items-center justify-center gap-1"
           style={{ color: "var(--ai-muted)" }}
         >
-          <span>🔒</span> Seus dados ficam protegidos. Sem spam, sem ligação fria.
+          <Lock size={12} /> Seus dados ficam protegidos. Sem spam, sem ligação fria.
         </p>
       </div>
 

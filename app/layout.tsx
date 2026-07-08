@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, JetBrains_Mono } from "next/font/google";
+import { formatLongDate } from "@/lib/date";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -16,11 +17,12 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "AI Night · Carteirinha Oficial — VanguardIA × DO IT Hub",
-  description:
-    "Confirme sua presença no AI Night e gere sua carteirinha oficial · 6 de maio · 18h · DO IT Hub Belém",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "AI Night · Carteirinha Oficial — VanguardIA × DO IT Hub",
+    description: `Confirme sua presença no AI Night e gere sua carteirinha oficial · ${formatLongDate(new Date())} · 18h · DO IT Hub Belém`,
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
